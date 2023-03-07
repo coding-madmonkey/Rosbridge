@@ -29,7 +29,8 @@
     });
 
     // Create a connection to the rosbridge WebSocket server.
-     controller_ros.connect('ws://localhost:50001'); //50001이어야 접속됨
+    //controller_ros.connect('ws://localhost:9090');  //!fix
+     controller_ros.connect('ws://localhost:50001');  //수정
 /////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////
@@ -59,9 +60,9 @@
       //document.getElementById('closed').style.display = 'inline';
     });
     
-     robot_ros.connect('ws://223.171.62.1:9090');  //1- 로봇도 같음.안됨 
-//     robot_ros.connect('ws://223.171.62.1:50001');  //2- 50001포트도 안됨 
-//     robot_ros.connect('ws://192.168.50.11:9090');  //2- 
+    //robot_ros.connect('ws://192.168.50.11:50001');  //!fix
+    //robot_ros.connect('ws://192.168.50.182:9090');  //수정 공유기 내부ip
+     robot_ros.connect('ws://223.171.62.1:9090');  //수정 공유기 고정ip
     ////////////////////////////////////////////////
     var JoyListener = new ROSLIB.Topic({
           ros : controller_ros,
@@ -73,7 +74,9 @@
           name : '/joyFromController',
           messageType : 'sensor_msgs/Joy'
     });    
- 
+    ////////////////////////////////////////////////
+    //!add
+    // 수정
     var intListener = new ROSLIB.Topic({
           ros : controller_ros,
           name : '/sendint',
@@ -85,13 +88,14 @@
           messageType : 'std_msgs/Int16'
     });
     ////////////////////////////////////////////////
-
+//인터넷에서 디버그하기 위한것, 디버그할때 숫자가 쌓이는것은 같은것이 쌓이는것이고 새로운것은 아래로 내려감
    JoyListener.subscribe(function(message) {    
      console.log('joy hit!')
          robot_joypub.publish(message);
          delete message
    });
     ////////////////////////////////////////////////
+    //!add 
 
    intListener.subscribe(function(message) {    
      console.log('int hit!')
